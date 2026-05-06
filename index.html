@@ -1,0 +1,45 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Blob URL HTML Loader</title> <style> body { font-family: Arial, sans-serif; margin: 40px; background: #f7f7f7; color: #222; }
+.container {
+  max-width: 700px;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+h1 {
+  margin-top: 0;
+}
+
+input, button {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  border-radius: 8px;
+  background: white;
+}
+
+.url-box {
+  margin-top: 16px;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 6px;
+  word-break: break-all;
+  font-size: 14px;
+}
+</style> </head> <body> <div class="container"> <h1>Blob URL HTML Loader</h1> <p>Select an HTML file. It will be read, turned into a Blob URL, and displayed below.</p>
+<input type="file" id="fileInput" accept=".html,text/html" />
+  
+
+<button id="loadBtn">Load HTML into Blob URL</button>
+
+<div class="url-box" id="blobUrlBox">Blob URL will appear here.</div>
+
+<iframe id="viewer"></iframe>
+</div> <script> const fileInput = document.getElementById('fileInput'); const loadBtn = document.getElementById('loadBtn'); const viewer = document.getElementById('viewer'); const blobUrlBox = document.getElementById('blobUrlBox'); let currentBlobUrl = null; loadBtn.addEventListener('click', () => { const file = fileInput.files[0]; if (!file) { alert('Please select an HTML file first.'); return; } const reader = new FileReader(); reader.onload = function(e) { const htmlContent = e.target.result; if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); } const blob = new Blob([htmlContent], { type: 'text/html' }); currentBlobUrl = URL.createObjectURL(blob); blobUrlBox.textContent = currentBlobUrl; viewer.src = currentBlobUrl; }; reader.readAsText(file); }); </script> </body> </html>
